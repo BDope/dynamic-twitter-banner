@@ -22,7 +22,7 @@ const createBanner = async (bannerPath) => {
             const imgPath = `./images/avatars/${avatar}`
             const image = await Jimp.read(imgPath)
 
-            const x = 600 + index * (100 + 10);
+            const x = 475 + index * (100 + 10);
             banner.composite(image, x, 380);
             index++
         }
