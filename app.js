@@ -18,7 +18,7 @@ async function generateBanner() {
         await saveFollowerAvatar(follower.id, imageBuffer)
     }
 
-    await createBanner("../images/banner.jpg")
+    await createBanner(process.env.BANNER_PATH)
     await updateBanner("./images/1500x500_final.png")
 
 }

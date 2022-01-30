@@ -5,15 +5,15 @@ const Jimp = require("jimp")
 const fsPromises = fs.promises;
 
 const saveFollowerAvatar = async (name, imageBuffer) => {
-    console.log('saving follower avatas', name)
+    console.log('saving follower avatars', name)
     await sharp(imageBuffer)
         .resize(100, 100)
-        .toFile(`./images/avatars/${name}.png`)
+        .toFile(`${path.join(__dirname, '../images/avatars')}/${name}.png`)
 }
 
-const createBanner = async () => {
+const createBanner = async (bannerPath) => {
     console.log("creating banner")
-    const banner = await Jimp.read(`${path.join(__dirname, '../images')}/banner.jpg`)
+    const banner = await Jimp.read(bannerPath)
     const files = await fsPromises.readdir(path.join(__dirname, '../images/avatars'))
 
     let index = 0

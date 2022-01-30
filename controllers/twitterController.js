@@ -1,5 +1,4 @@
 const client = require("../utils/twitterClient.js")
-const sharp = require("sharp")
 const axios = require("axios")
 
 const updateBanner = async (imagePath) => {
@@ -9,7 +8,7 @@ const updateBanner = async (imagePath) => {
 const getFollowers = async () => {
     try {
         const followers = await client.v2.followers(process.env.DOMS_TWITTER_ID)
-        return followers.data.slice(0, 3)
+        return followers.data.slice(0, 5)
     } catch (e) {
         console.error(e)
         throw new Error("Couldn't get followers")
