@@ -7,7 +7,7 @@ const updateBanner = async (imagePath) => {
 
 const getFollowers = async () => {
     try {
-        const followers = await client.v2.followers(process.env.DOMS_TWITTER_ID)
+        const followers = await client.v2.followers(process.env.TWITTER_ID)
         return followers.data.slice(0, 3)
     } catch (e) {
         console.error(e)
