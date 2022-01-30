@@ -1,3 +1,7 @@
 node_modules
 .env
 .idea
+
+images/*
+!images/avatars
+images/avatars/*
