@@ -13,7 +13,7 @@ async function generateBanner() {
 
     const followers = await getFollowers()
     for (const follower of followers) {
-        console.log("getting images")
+        console.log("get follower images")
         const imageBuffer = await getUserProfileImage(follower.id)
         await saveFollowerAvatar(follower.id, imageBuffer)
     }
@@ -22,7 +22,6 @@ async function generateBanner() {
     await updateBanner("./images/1500x500_final.png")
 
 }
-
 
 const job = new CronJob('* * * * *', async function () {
     await generateBanner()

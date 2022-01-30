@@ -8,26 +8,29 @@ const saveFollowerAvatar = async (name, imageBuffer) => {
     console.log('saving follower avatars', name)
     await sharp(imageBuffer)
         .resize(100, 100)
-        .toFile(`${path.join(__dirname, '../images/avatars')}/${name}.png`)
+        .toFile(`./images/avatars/${name}.png`)
 }
 
 const createBanner = async (bannerPath) => {
     console.log("creating banner")
     const banner = await Jimp.read(bannerPath)
-    const files = await fsPromises.readdir(path.join(__dirname, '../images/avatars'))
+    const files = await fsPromises.readdir('./images/avatars')
 
     let index = 0
     for (const avatar of files) {
-        const imgPath = `${path.join(__dirname, "../images/avatars/")}${avatar}`
-        const image = await Jimp.read(imgPath)
+        if (avatar !== '.gitkeep') {
+            const imgPath = `./images/avatars/${avatar}`
+            const image = await Jimp.read(imgPath)
 
-        const x = 600 + index * (100 + 10);
-        banner.composite(image, x, 350);
-        index++
+            const x = 600 + index * (100 + 10);
+            banner.composite(image, x, 350);
+            index++
+        }
     }
 
+
     try {
-        await banner.writeAsync(`${path.join(__dirname, "../images/")}1500x500_final.png`);
+        await banner.writeAsync(`./images/1500x500_final.png`);
         console.log("finished")
     } catch (e) {
         console.error(e)
