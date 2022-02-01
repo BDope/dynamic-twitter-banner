@@ -2,6 +2,7 @@ const sharp = require("sharp")
 const path = require("path")
 const fs = require("fs")
 const Jimp = require("jimp")
+const {getFollowers, getUserProfileImage, updateBanner} = require("./twitterController");
 const fsPromises = fs.promises;
 
 const saveFollowerAvatar = async (name, imageBuffer) => {
@@ -37,5 +38,24 @@ const createBanner = async (bannerPath) => {
     }
 
 }
+const generateBanner = async () => {
 
-module.exports = {createBanner, saveFollowerAvatar}
+    const followers = await getFollowers()
+    for (const follower of followers) {
+        console.log("get follower images")
+        let imageBuffer;
+        try {
+            imageBuffer = await getUserProfileImage(follower.id)
+            await saveFollowerAvatar(follower.id, imageBuffer)
+        } catch (e) {
+            console.log("follower of followers")
+            console.error(e)
+        }
+    }
+
+    await createBanner(process.env.BANNER_PATH)
+    await updateBanner("./images/1500x500_final.png")
+
+}
+
+module.exports = {createBanner, saveFollowerAvatar, generateBanner}

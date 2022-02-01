@@ -21,6 +21,7 @@ const getFollowers = async () => {
 const getUserProfileImage = async (user_id) => {
     try {
         const {profile_image_url} = await client.v1.user({user_id});
+
         const {data} = await axios.get(profile_image_url, {
             responseType: "arraybuffer"
         })
@@ -34,4 +35,14 @@ const getUserProfileImage = async (user_id) => {
     }
 }
 
-module.exports = {updateBanner, getUserProfileImage, getFollowers}
+const tweetGoodMorning = async () => {
+    try {
+        await client.v1.tweet("Good Morning everyone! (This is an automated tweet)\n" +
+            " #100DaysOfCode #5amClub")
+    } catch (e) {
+        console.error(e)
+        throw new Error("Couldn't make the tweet")
+    }
+}
+
+module.exports = {updateBanner, getUserProfileImage, getFollowers, tweetGoodMorning}

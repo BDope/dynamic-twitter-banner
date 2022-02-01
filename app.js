@@ -1,33 +1,29 @@
-require("dotenv").config()
-const createError = require("http-errors")
-const express = require("express")
-const path = require("path")
-const logger = require("morgan")
-const indexRouter = require("./routes")
+require("dotenv").config();
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const logger = require("morgan");
+const indexRouter = require("./routes");
 const app = express();
 const CronJob = require('cron').CronJob;
-const {getFollowers, getUserProfileImage, updateBanner} = require("./controllers/twitterController")
-const{createBanner, saveFollowerAvatar} = require("./controllers/imageController.js")
+const {generateBanner} = require("./controllers/imageController.js");
+const {tweetGoodMorning} = require("./controllers/twitterController.js");
+const fs = require('fs');
 
-async function generateBanner() {
-
-    const followers = await getFollowers()
-    for (const follower of followers) {
-        console.log("get follower images")
-        const imageBuffer = await getUserProfileImage(follower.id)
-        await saveFollowerAvatar(follower.id, imageBuffer)
-    }
-
-    await createBanner(process.env.BANNER_PATH)
-    await updateBanner("./images/1500x500_final.png")
-
-}
+deleteOldAvatars()
 
 const job = new CronJob('* * * * *', async function () {
     await generateBanner()
     console.log('You will see this message every minute');
 });
 job.start()
+
+
+const tweeter = new CronJob('0 5 * * *', async function () {
+    await tweetGoodMorning()
+    console.log('This cron tweets every morning');
+});
+tweeter.start()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,5 +56,21 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+function deleteOldAvatars() {
+    const directory = './images/avatars';
+
+    fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+
+        for (const file of files) {
+            if (file !== ".gitkeep") {
+                fs.unlink(path.join(directory, file), err => {
+                    if (err) throw err;
+                });
+            }
+        }
+    });
+}
 
 module.exports = app
