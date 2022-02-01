@@ -40,21 +40,26 @@ const createBanner = async (bannerPath) => {
 }
 const generateBanner = async () => {
 
-    const followers = await getFollowers()
-    for (const follower of followers) {
-        console.log("get follower images")
-        let imageBuffer;
-        try {
-            imageBuffer = await getUserProfileImage(follower.id)
-            await saveFollowerAvatar(follower.id, imageBuffer)
-        } catch (e) {
-            console.log("follower of followers")
-            console.error(e)
+    try {
+        const followers = await getFollowers()
+        for (const follower of followers) {
+            console.log("get follower images")
+            let imageBuffer;
+            try {
+                imageBuffer = await getUserProfileImage(follower.id)
+                await saveFollowerAvatar(follower.id, imageBuffer)
+            } catch (e) {
+                console.log("follower of followers")
+                console.error(e)
+            }
         }
+
+        await createBanner(process.env.BANNER_PATH)
+        await updateBanner("./images/1500x500_final.png")
+    } catch(e) {
+        console.error(e)
     }
 
-    await createBanner(process.env.BANNER_PATH)
-    await updateBanner("./images/1500x500_final.png")
 
 }
 
