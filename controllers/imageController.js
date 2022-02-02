@@ -44,9 +44,8 @@ const generateBanner = async () => {
         const followers = await getFollowers()
         for (const follower of followers) {
             console.log("get follower images")
-            let imageBuffer;
+            const imageBuffer = await getUserProfileImage(follower.id)
             try {
-                imageBuffer = await getUserProfileImage(follower.id)
                 await saveFollowerAvatar(follower.id, imageBuffer)
             } catch (e) {
                 console.log("follower of followers")
@@ -57,6 +56,7 @@ const generateBanner = async () => {
         await createBanner(process.env.BANNER_PATH)
         await updateBanner("./images/1500x500_final.png")
     } catch(e) {
+        console.log("generateBanner knallt")
         console.error(e)
     }
 

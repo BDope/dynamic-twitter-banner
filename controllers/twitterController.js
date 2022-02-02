@@ -19,20 +19,34 @@ const getFollowers = async () => {
 }
 
 const getUserProfileImage = async (user_id) => {
+     const defaultImage = "https://hosting101451.af98b.netcup.net/default_profile_normal.jpg"
+
+    let image;
     try {
         const {profile_image_url} = await client.v1.user({user_id});
 
-        const {data} = await axios.get(profile_image_url, {
+        if(profile_image_url.endsWith(".png")) {
+            image = defaultImage
+        } else {
+            image = profile_image_url
+        }
+
+        console.log('IMAGE', image)
+    } catch (e) {
+        console.log("Error fetching image")
+        console.error(e)
+    }
+
+    try {
+        const {data} = await axios.get(image, {
             responseType: "arraybuffer"
         })
-
         return data
-
-
     } catch (e) {
+        console.log("Error creating image buffer")
         console.error(e)
-        throw new Error("Couldn't get users profile image")
     }
+
 }
 
 const tweetGoodMorning = async () => {
