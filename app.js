@@ -9,19 +9,18 @@ const fs = require('fs');
 
 deleteOldAvatars()
 
-generateBanner()
-// const job = new CronJob('* * * * *', async function () {
-//     await generateBanner()
-//     console.log('You will see this message every minute');
-// });
-// job.start()
-//
-//
-// const tweeter = new CronJob('0 5 * * *', async function () {
-//     await tweetGoodMorning()
-//     console.log('This cron tweets every morning');
-// });
-// tweeter.start()
+const job = new CronJob('* * * * *', async function () {
+    await generateBanner()
+    console.log('You will see this message every minute');
+});
+job.start()
+
+
+const tweeter = new CronJob('0 5 * * *', async function () {
+    await tweetGoodMorning()
+    console.log('This cron tweets every morning');
+});
+tweeter.start()
 
 app.get('/', function (req, res, next) {
     res.send('Server is running. By <a href="https://domthedev.com/">Dom the dev</a>');
