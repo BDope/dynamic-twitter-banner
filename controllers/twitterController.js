@@ -2,7 +2,12 @@ const client = require("../utils/twitterClient.js")
 const axios = require("axios")
 
 const updateBanner = async (imagePath) => {
-    await client.v1.updateAccountProfileBanner(imagePath, {width: 1500, height: 500});
+    try {
+        await client.v1.updateAccountProfileBanner(imagePath, {width: 1500, height: 500});
+    } catch (e) {
+        console.log('update banner failed')
+        console.error(e)
+    }
 }
 
 const getFollowers = async () => {
@@ -19,13 +24,13 @@ const getFollowers = async () => {
 }
 
 const getUserProfileImage = async (user_id) => {
-     const defaultImage = "https://hosting101451.af98b.netcup.net/default_profile_normal.jpg"
+    const defaultImage = "https://hosting101451.af98b.netcup.net/default_profile_normal.jpg"
 
     let image;
     try {
         const {profile_image_url} = await client.v1.user({user_id});
 
-        if(profile_image_url.endsWith(".png")) {
+        if (profile_image_url.endsWith(".png")) {
             image = defaultImage
         } else {
             image = profile_image_url

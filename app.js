@@ -16,7 +16,7 @@ const job = new CronJob('* * * * *', async function () {
 job.start()
 
 
-const tweeter = new CronJob('0 5 * * *', async function () {
+const tweeter = new CronJob('0 4 * * *', async function () {
     await tweetGoodMorning()
     console.log('This cron tweets every morning');
 });

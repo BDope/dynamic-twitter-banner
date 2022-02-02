@@ -34,6 +34,7 @@ const createBanner = async (bannerPath) => {
         await banner.writeAsync(`./images/1500x500_final.png`);
         console.log("finished")
     } catch (e) {
+        console.log('create banner failed')
         console.error(e)
     }
 
@@ -55,6 +56,7 @@ const generateBanner = async () => {
 
         await createBanner(process.env.BANNER_PATH)
         await updateBanner("./images/1500x500_final.png")
+
     } catch(e) {
         console.log("generateBanner knallt")
         console.error(e)
