@@ -1,5 +1,4 @@
 const sharp = require("sharp")
-const path = require("path")
 const fs = require("fs")
 const Jimp = require("jimp")
 const {getFollowers, getUserProfileImage, updateBanner} = require("./twitterController");
