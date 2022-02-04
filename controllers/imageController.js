@@ -39,6 +39,7 @@ const createBanner = async (bannerPath) => {
 
 }
 const generateBanner = async () => {
+    console.log('start generating banner!')
 
     try {
         const followers = await getFollowers()

@@ -6,12 +6,12 @@ const CronJob = require('cron').CronJob;
 const {generateBanner} = require("./controllers/imageController.js");
 const {tweetGoodMorning} = require("./controllers/twitterController.js");
 const fs = require('fs');
-
-deleteOldAvatars()
+const fsPromises = fs.promises;
 
 const job = new CronJob('* * * * *', async function () {
+    console.log('Starting Job');
+    await deleteOldAvatars()
     await generateBanner()
-    console.log('You will see this message every minute');
 });
 job.start()
 
@@ -26,17 +26,22 @@ app.get('/', function (req, res, next) {
     res.send('Server is running. By <a href="https://domthedev.com/">Dom the dev</a>');
 });
 
-function deleteOldAvatars() {
+async function deleteOldAvatars() {
     const directory = './images/avatars';
+    console.log('deleting old avatars')
 
-    fs.readdir(directory, (err, files) => {
+    await fsPromises.readdir(directory, async (err, files) => {
         if (err) throw err;
+
 
         for (const file of files) {
             if (file !== ".gitkeep") {
-                fs.unlink(path.join(directory, file), err => {
-                    if (err) throw err;
-                });
+                try {
+                    await fsPromises.unlink(path.join(directory, file));
+                } catch (e) {
+                    console.log('Error deleting image')
+                    console.error(e)
+                }
             }
         }
     });
