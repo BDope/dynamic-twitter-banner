@@ -56,7 +56,7 @@ const getUserProfileImage = async (user_id) => {
 
 const tweetGoodMorning = async () => {
     try {
-        await client.v1.tweet("Good Morning everyone! (This is an automated tweet)\n" +
+        await client.v1.tweet("Good Morning everyone! Consistency is key! Never give up!\n" +
             " #100DaysOfCode #5amClub")
     } catch (e) {
         console.error(e)
